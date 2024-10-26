@@ -1,14 +1,16 @@
-from flask import flask
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///late_show.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-from models import Episode, Gest, Appearance
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)  # Set up Flask-Migrate
+
+from models import Episode, Guest, Appearance
 from routes import *
 
-if __name__ == '__main__':
-    db.create_all()  # Create the database tables if not already exists
+if __name__ == "__main__":
     app.run(debug=True)
